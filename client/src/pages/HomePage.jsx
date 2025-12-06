@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { api } from '../hooks/api';
+import Sidebar from '../components/Sidebar';
+import ChatContainer from '../components/ChatContainer';
 
 const HomePage = () => {
 
@@ -11,23 +13,16 @@ const HomePage = () => {
     }
 
     const getResponse = async () => {
-        const response = api.post('/response',{
+        const response = api.post('/response', {
             prompt: prompt
         });
         setResponse(response.data);
     }
     return (
-        <div>
-            <div>
-                <input onChange={(e) => setPrompt(e.target.value)} type='text' placeholder='prompt' />
-            </div>
-            <div onClick={handleSumbit}>
-                ask
-            </div>
-            <div>
-                {response}
-            </div>
-        </div>
+        <main className='grid grid-cols-[2fr_7fr]'>
+            <Sidebar />
+            <ChatContainer />
+        </main>
     )
 }
 
