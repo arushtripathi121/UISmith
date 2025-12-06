@@ -7,14 +7,13 @@ const { log } = require('console');
 exports.loginUsingOAuth = async (req, res) => {
     try {
         const { code } = req.query;
-        
+
         const googleResponse = await oauth2Client.getToken(code);
         oauth2Client.setCredentials(googleResponse.tokens);
         const userResponse = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleResponse.tokens.access_token}`);
 
         const { email, name, picture } = userResponse.data;
-        console.log(email, name, picture);
-        
+
         let user = await User.findOne({ email });
 
         if (!user) {
@@ -26,10 +25,11 @@ exports.loginUsingOAuth = async (req, res) => {
             expiresIn: '7d'
         });
 
-        res.cookie("userCookie", token, {
+        res.cookie("user", token, {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
-            sameSite: 'lax',
+            sameSite: process.env.NODE_ENV ? "Lax" : "none",
+            secure: process.env.NODE_ENV === "production",
         })
 
         return res.status(200).json({
@@ -37,7 +37,22 @@ exports.loginUsingOAuth = async (req, res) => {
             message: 'user created successfully'
         })
     } catch (err) {
-        console.log('Error in creating/verifying user ', err.message);
+        return res.status(500).json({
+            success: true,
+            message: 'Error in creating user',
+            err
+        })
+    }
+}
+
+exports.logout = async (req, res) => {
+    try {
+        res.clearCookie("user");
+        return res.status(200).json({
+            success: true,
+            message: 'logged out'
+        })
+    } catch (err) {
         return res.status(500).json({
             success: true,
             message: 'Error in creating user',

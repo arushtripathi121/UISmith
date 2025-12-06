@@ -4,6 +4,8 @@ const connectToDB  = require('./config/mongooseConnection');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const authRouter = require('./routes/authRoutes');
+const verifyAuthRouter = require('./routes/userCheckRoute');
+const responseRouter = require('./routes/responseRoutes');
 
 const app = express();
 app.use(express.json());
@@ -25,6 +27,8 @@ app.get('/api/v1/test', (req, res) => {
 })
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/authVerify', verifyAuthRouter);
+app.use('/api/v1/response', responseRouter);
 
 const port = process.env.PORT;
 
