@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LandingPage from '../pages/LandingPage';
 import HomePage from '../pages/HomePage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { api } from '../hooks/api';
+import { useUser } from '../context/UserContext';
+
 
 const GoogleWrapper = () => {
     return (
@@ -14,8 +16,7 @@ const GoogleWrapper = () => {
 }
 
 const AppRouter = () => {
-
-    const [user, setUser] = useState();
+    const { user, setUser } = useUser();
 
     async function verifyAuth() {
         const response = await api.get('/authVerify');

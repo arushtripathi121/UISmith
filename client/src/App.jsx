@@ -1,12 +1,16 @@
 import './App.css'
-import Router from './router/AppRouter'
+import { DisplayModeProvider } from './context/DisplayModeContext'
+import { UserProvider } from './context/UserContext'
+import AppRouter from './router/AppRouter'
 
 function App() {
 
   return (
-    <>
-      <Router />
-    </>
+    <DisplayModeProvider>
+      <UserProvider>
+        <AppRouter />
+      </UserProvider>
+    </DisplayModeProvider>
   )
 }
 
