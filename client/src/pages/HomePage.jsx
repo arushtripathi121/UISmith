@@ -5,7 +5,7 @@ import ChatContainer from '../components/ChatContainer';
 
 const HomePage = () => {
     return (
-        <main className='grid grid-cols-[2fr_7fr]'>
+        <main className='bg-[#101114] grid grid-cols-[2fr_7fr]'>
             <Sidebar />
             <ChatContainer />
         </main>
