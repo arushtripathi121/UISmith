@@ -5,6 +5,7 @@ import HomePage from '../pages/HomePage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { api } from '../hooks/api';
 import { useUser } from '../context/UserContext';
+import { useSession } from '../context/SessionContext';
 
 
 const GoogleWrapper = () => {
@@ -17,6 +18,12 @@ const GoogleWrapper = () => {
 
 const AppRouter = () => {
     const { user, setUser } = useUser();
+    const { sessions, setSessions } = useSession();
+
+    async function getSessions() {
+        const response = await api.get('/sessions/user');
+        setSessions(response.data.sessions);
+    }
 
     async function verifyAuth() {
         const response = await api.get('/authVerify');
@@ -25,6 +32,7 @@ const AppRouter = () => {
 
     useEffect(() => {
         verifyAuth();
+        getSessions();
     }, [])
 
     return (

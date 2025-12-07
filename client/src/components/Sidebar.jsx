@@ -1,6 +1,7 @@
 import React from 'react'
 import { useUser } from '../context/UserContext'
 import { FiUser, FiMail } from "react-icons/fi";
+import Sessions from './Sessions';
 
 const Sidebar = () => {
 
@@ -51,6 +52,10 @@ const Sidebar = () => {
 
                     </aside>
                 </div>
+            </section>
+
+            <section>
+                <Sessions />
             </section>
 
         </main>

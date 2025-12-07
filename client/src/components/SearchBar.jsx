@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import { FiMic, FiSquare } from "react-icons/fi";
+import { api } from "../hooks/api";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = () => {
     const [query, setQuery] = useState("");
     const [interim, setInterim] = useState("");
     const [listening, setListening] = useState(false);
@@ -61,9 +62,11 @@ const SearchBar = ({ onSearch }) => {
         setInterim("");
     };
 
-    const triggerSearch = () => {
-        if (onSearch) onSearch(query);
-    };
+    const handleResponse = async () => {
+        const response = await api.post('/response', {
+            prompt: query
+        });
+    }
 
     return (
         <div className="w-full relative">
@@ -110,7 +113,7 @@ const SearchBar = ({ onSearch }) => {
                 )}
 
                 <button
-                    onClick={triggerSearch}
+                    onClick={handleResponse}
                     className="px-5 py-2 bg-white text-black font-semibold rounded-xl hover:scale-105 transition shadow-sm"
                 >
                     Design
